@@ -4,47 +4,57 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int lastItem = -1;
+    private static final int MAX_SIZE = 10000;
+    Resume[] storage = new Resume[MAX_SIZE];
+    int size = 0;
 
     void clear() {
-        storage = new Resume[10000];
-        lastItem = -1;
+        for (int i = 0; i < size; i++) {
+            storage[i] = null;
+        }
+
+        size = 0;
     }
 
     void save(Resume r) {
-        if (lastItem > 9998) {
+        if (size == MAX_SIZE) {
             System.out.print("<<< Here throws 'NotEnoughDbSizeException' o:) >>> ");
+            return;
+        }
+
+        Resume resume = getResume(r.uuid);
+
+        if (resume != null) {
+            System.out.format("<<< Here throws 'NoteAlreadyExists' for uuid='%s' o:) >>> ", r.uuid);
         } else {
-            lastItem++;
-            storage[lastItem] = r;
+            storage[size] = r;
+            size++;
         }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < lastItem + 1; i++) {
-            if (storage[i] != null && storage[i].uuid.equals(uuid)) {
-                return storage[i];
-            }
+        Resume resume = getResume(uuid);
+
+        if (resume == null) {
+            System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' o:) >>> ", uuid);
         }
 
-        System.out.print("<<< Here throws 'NotFoundException' o:) >>> ");
-        return null;
+        return resume;
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < lastItem; i++) {
-            if (storage[i] != null && storage[i].uuid.equals(uuid)) {
-                storage[i] = storage[lastItem];
-                storage[lastItem] = null;
-                lastItem--;
+        for (int i = 0; i < size - 1; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                storage[i] = storage[size - 1];
+                storage[size - 1] = null;
+                size--;
                 return;
             }
         }
 
-        if (storage[lastItem] != null && storage[lastItem].uuid.equals(uuid)) {
-            storage[lastItem] = null;
-            lastItem--;
+        if (storage[size - 1].uuid.equals(uuid)) {
+            storage[size - 1] = null;
+            size--;
         }
     }
 
@@ -52,10 +62,21 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, lastItem + 1);
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     int size() {
-        return lastItem + 1;
+        return size;
+    }
+
+    private Resume getResume(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                return storage[i];
+            }
+        }
+
+        return null;
     }
 }
+
