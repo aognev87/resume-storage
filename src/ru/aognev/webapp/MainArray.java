@@ -1,9 +1,14 @@
+package ru.aognev.webapp;
+
+import ru.aognev.webapp.model.Resume;
+import ru.aognev.webapp.storage.ArrayStorage;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Test for com.urise.webapp.storage.ArrayStorage
+ * Test for com.urise.webapp.storage.ru.aognev.webapp.storage.ArrayStorage
  */
 public class MainArray {
     private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
@@ -26,12 +31,12 @@ public class MainArray {
                 case "list":
                     printAll();
                     break;
-                case "size":
-                    System.out.println(ARRAY_STORAGE.size());
+                case "getSize":
+                    System.out.println(ARRAY_STORAGE.getSize());
                     break;
                 case "save":
                     r = new Resume();
-                    r.uuid = uuid;
+                    r.setUuid(uuid);
                     ARRAY_STORAGE.save(r);
                     printAll();
                     break;
