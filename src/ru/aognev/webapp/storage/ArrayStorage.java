@@ -25,9 +25,9 @@ public class ArrayStorage {
             return;
         }
 
-        Integer resumeNumber = getResumeNumber(resume.getUuid());
+        Integer index = getIndex(resume.getUuid());
 
-        if (resumeNumber == null) {
+        if (index == null) {
             storage[size] = resume;
             size++;
         } else {
@@ -35,34 +35,34 @@ public class ArrayStorage {
         }
     }
 
-    public void update(Resume oldResume, Resume newResume) {
-        Integer resumeNumber = getResumeNumber(oldResume.getUuid());
+    public void update(Resume resume) {
+        Integer index = getIndex(resume.getUuid());
 
-        if (resumeNumber == null) {
-            System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>>\n", oldResume.getUuid());
+        if (index == null) {
+            System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>>\n", resume.getUuid());
         } else {
-            storage[resumeNumber] = newResume;
+            storage[index] = resume;
         }
     }
 
     public Resume get(String uuid) {
-        Integer resumeNumber = getResumeNumber(uuid);
+        Integer index = getIndex(uuid);
 
-        if (resumeNumber == null) {
+        if (index == null) {
             System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>> ", uuid);
             return null;
         } else {
-            return storage[resumeNumber];
+            return storage[index];
         }
     }
 
     public void delete(String uuid) {
-        Integer resumeNumber = getResumeNumber(uuid);
+        Integer index = getIndex(uuid);
 
-        if (resumeNumber == null) {
+        if (index == null) {
             System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>>\n", uuid);
         } else {
-            storage[resumeNumber] = storage[size - 1];
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         }
@@ -79,7 +79,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private Integer getResumeNumber(String uuid) {
+    private Integer getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

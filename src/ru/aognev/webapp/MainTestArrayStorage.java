@@ -29,12 +29,12 @@ public class MainTestArrayStorage {
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
         printAll();
-        System.out.println("Update: " + r4 + " to " + r3);
-        ARRAY_STORAGE.update(r4, r3);
+        System.out.println("Update: " + r4);
+        ARRAY_STORAGE.update(r4);
 
         printAll();
-        System.out.println("Update: " + r2 + " to " + r4);
-        ARRAY_STORAGE.update(r2, r4);
+        System.out.println("Update: " + r2);
+        ARRAY_STORAGE.update(r2);
 
         printAll();
         System.out.println("Delete: " + r1);
