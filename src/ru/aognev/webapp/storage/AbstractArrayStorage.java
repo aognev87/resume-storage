@@ -10,9 +10,30 @@ public abstract class AbstractArrayStorage implements Storage {
     protected static final int MAX_SIZE = 10000;
     protected Resume[] storage = new Resume[MAX_SIZE];
     protected int size = 0;
+    protected int index = 0;
+
+    public void save(Resume resume) {
+        if (size == MAX_SIZE) {
+            System.out.println("<<< Here throws 'NotEnoughDbSizeException' >>> ");
+        } else {
+            index = getIndex(resume.getUuid());
+
+            if (index > -1) {
+                System.out.format("<<< Here throws 'NoteAlreadyExists' for uuid='%s' >>> ", resume.getUuid());
+            }
+        }
+    }
+
+    public void delete(String uuid) {
+        index = getIndex(uuid);
+
+        if (index < 0) {
+            System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>>\n", uuid);
+        }
+    }
 
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
+        index = getIndex(resume.getUuid());
 
         if (index < 0) {
             System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>>\n", resume.getUuid());
@@ -22,7 +43,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
+        index = getIndex(uuid);
 
         if (index < 0) {
             System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>> ", uuid);

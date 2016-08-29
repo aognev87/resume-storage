@@ -20,6 +20,8 @@ public class MainTestArrayStorage {
     private static void testStorage(Storage storage) {
         System.out.println("\n\n------------------------------------------------------------------------------------");
         System.out.println("Testing '" + storage.getClass().getSimpleName() + "'\n");
+        Resume r0 = new Resume();
+        r0.setUuid("uuid0");
         Resume r1 = new Resume();
         r1.setUuid("uuid1");
         Resume r2 = new Resume();
@@ -35,6 +37,7 @@ public class MainTestArrayStorage {
         storage.save(r5);
         storage.save(r2);
         storage.save(r3);
+        storage.save(r0);
 
         System.out.println("Get r1: " + storage.get(r1.getUuid()));
         System.out.println("Size: " + storage.getSize());

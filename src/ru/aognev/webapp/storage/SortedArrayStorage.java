@@ -10,32 +10,30 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     public void save(Resume resume) {
-        if (size == MAX_SIZE) {
-            System.out.println("<<< Here throws 'NotEnoughDbSizeException' >>> ");
-            return;
-        }
+        super.save(resume);
 
-        int index = getIndex(resume.getUuid());
-
-        if (index < 0) {
+        if (size < MAX_SIZE && index < 0) {
             index = -1 * (index + 1);
-            System.arraycopy(storage, index, storage, index + 1, size - index);
+
+            for (int i = size; i > index; i--) {
+                storage[i] = storage[i - 1];
+            }
+
             storage[index] = resume;
             size++;
-        } else {
-            System.out.format("<<< Here throws 'NoteAlreadyExists' for uuid='%s' >>> ", resume.getUuid());
         }
     }
 
 
     @Override
     public void delete(String uuid) {
-        int index = getIndex(uuid);
+        super.delete(uuid);
 
-        if (index < 0) {
-            System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>>\n", uuid);
-        } else {
-            System.arraycopy(storage, index + 1, storage, index, size - index);
+        if (index > -1) {
+            for (int i = index; i < size; i++) {
+                storage[i] = storage[i + 1];
+            }
+
             storage[size - 1] = null;
             size--;
         }
@@ -43,6 +41,27 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected int getIndex(String uuid) {
-        return Arrays.binarySearch(storage, 0, size, new Resume(uuid));
+        Resume key = new Resume(uuid);
+
+        int low = 0;
+        int high = size;
+        int mid;
+
+        while (low < high) {
+            mid = (low + high) / 2;
+
+            if (key.compareTo(storage[mid]) == 0) {
+                return mid;
+            } else {
+                if (key.compareTo(storage[mid]) < 0) {
+                    high = mid;
+                } else {
+                    low = mid + 1;
+                }
+            }
+
+        }
+
+        return -1 * (low + 1);
     }
 }

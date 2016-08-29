@@ -8,27 +8,18 @@ import ru.aognev.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     public void save(Resume resume) {
-        if (size == MAX_SIZE) {
-            System.out.println("<<< Here throws 'NotEnoughDbSizeException' >>> ");
-            return;
-        }
+        super.save(resume);
 
-        int index = getIndex(resume.getUuid());
-
-        if (index == -1) {
+        if (size < MAX_SIZE && index < 0) {
             storage[size] = resume;
             size++;
-        } else {
-            System.out.format("<<< Here throws 'NoteAlreadyExists' for uuid='%s' >>> ", resume.getUuid());
         }
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
+        super.delete(uuid);
 
-        if (index == -1) {
-            System.out.format("<<< Here throws 'NotFoundException' for uuid='%s' >>>\n", uuid);
-        } else {
+        if (index > -1) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
