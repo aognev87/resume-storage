@@ -2,87 +2,74 @@ package ru.aognev.webapp.storage;
 
 import ru.aognev.webapp.exception.ExistStorageException;
 import ru.aognev.webapp.exception.NotExistStorageException;
-import ru.aognev.webapp.exception.StorageException;
 import ru.aognev.webapp.model.Resume;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by aognev on 01.09.2016.
  */
 public abstract class AbstractStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
-    protected int size = 0;
 
-    @Override
-    public void clear() {
-        clearStorage();
-        size = 0;
+    protected abstract Object getSearchKey(String uuid);
+
+    protected abstract boolean isExist(Object searchKey);
+
+    protected abstract void doUpdate(Resume r, Object searchKey);
+
+    protected abstract void doSave(Resume r, Object searchKey);
+
+    protected abstract void doDelete(Object searchKey);
+
+    protected abstract Resume doGet(Object searchKey);
+
+    protected static List<Resume> getAllSorted(List<Resume> resumes) {
+
+        Collections.sort(
+                resumes,
+                (Resume r1, Resume r2) -> r1.getFullName().compareTo(r2.getFullName())
+        );
+
+        return resumes;
     }
 
-    @Override
-    public void save(Resume resume) {
-        if (size == STORAGE_LIMIT) {
-            throw new StorageException("Storage overflow", resume.getUuid());
-            //System.out.println("Storage overflow " + resume.getUuid());
-        } else {
-            if (addElement(resume)) {
-                size++;
-            } else {
-                throw new ExistStorageException(resume.getUuid());
-                //System.out.println("NotExistStorageException " + resume.getUuid());
-            }
-        }
+    public void update(Resume r) {
+        Object searchKey = getExistedSearchKey(r.getUuid());
+        doUpdate(r, searchKey);
     }
 
-    @Override
-    public void update(Resume resume) {
-        if (!updateElement(resume)) {
-            throw new NotExistStorageException(resume.getUuid());
-            //System.out.println("NotExistStorageException " + resume.getUuid());
-        }
+    public void save(Resume r) {
+        Object searchKey = getNotExistedSearchKey(r.getUuid());
+        doSave(r, searchKey);
     }
 
-    @Override
-    public Resume get(String uuid) {
-        Resume resume = getElement(uuid);
-
-        if (resume == null) {
-            throw new NotExistStorageException(uuid);
-            //System.out.println("NotExistStorageException " + uuid);
-        }
-
-        return resume;
-    }
-
-    @Override
     public void delete(String uuid) {
-        if (deleteElement(uuid)) {
-            size--;
-        } else {
+        Object searchKey = getExistedSearchKey(uuid);
+        doDelete(searchKey);
+    }
+
+    public Resume get(String uuid) {
+        Object searchKey = getExistedSearchKey(uuid);
+        return doGet(searchKey);
+    }
+
+    private Object getExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
-            //System.out.println("NotExistStorageException " + uuid);
         }
+
+        return searchKey;
     }
 
-    @Override
-    public Resume[] getAll() {
-        return getResumesArray();
+    private Object getNotExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new ExistStorageException(uuid);
+        }
+
+        return searchKey;
     }
-
-    @Override
-    public int getSize() {
-        return size;
-    }
-
-    protected abstract void clearStorage();
-
-    protected abstract Resume[] getResumesArray();
-
-    protected abstract boolean addElement(Resume resume);
-
-    protected abstract boolean updateElement(Resume resume);
-
-    protected abstract Resume getElement(String uuid);
-
-    protected abstract boolean deleteElement(String uuid);
-
 }

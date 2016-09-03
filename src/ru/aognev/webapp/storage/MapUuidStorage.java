@@ -1,67 +1,61 @@
 package ru.aognev.webapp.storage;
 
-
 import ru.aognev.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by aognev on 01.09.2016.
  */
-public class ListStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
-    private List<Resume> list = new ArrayList<>();
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
     public void clear() {
-        list.clear();
+        map.clear();
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return AbstractStorage.getAllSorted(list);
+        return AbstractStorage.getAllSorted(new ArrayList<>(map.values()));
     }
 
     @Override
     public int getSize() {
-        return list.size();
+        return map.size();
     }
 
     @Override
-    protected Integer getSearchKey(String uuid) {
-        for (int i = 0; i < list.size(); i++) {
-            if (uuid.equals(list.get(i).getUuid())) {
-                return i;
-            }
-        }
-
-        return null;
+    protected String getSearchKey(String uuid) {
+        return uuid;
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return searchKey != null;
+        return map.containsKey(searchKey);
     }
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        list.set((Integer) searchKey, r);
+        map.replace((String) searchKey, r);
     }
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        list.add(r);
+        map.put((String) searchKey, r);
     }
 
     @Override
     protected void doDelete(Object searchKey) {
-        list.remove(((Integer) searchKey).intValue());
+        map.remove(searchKey);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return list.get((Integer) searchKey);
+        return map.get(searchKey);
     }
 }

@@ -2,42 +2,57 @@ package ru.aognev.webapp.storage;
 
 import ru.aognev.webapp.model.Resume;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Created by aognev on 01.09.2016.
+ * Created by aognev on 03.09.2016.
  */
 public class MapStorage extends AbstractStorage {
-    private final Map<String, Resume> resumeMap = new HashMap<>();
+
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected void clearStorage() {
-        resumeMap.clear();
+    public void clear() {
+        map.clear();
     }
 
     @Override
-    protected boolean addElement(Resume resume) {
-        return resumeMap.putIfAbsent(resume.getUuid(), resume) == null;
+    public List<Resume> getAllSorted() {
+        return AbstractStorage.getAllSorted(new ArrayList<>(map.values()));
     }
 
     @Override
-    protected boolean updateElement(Resume resume) {
-        return resumeMap.replace(resume.getUuid(), resume) != null;
+    public int getSize() {
+        return map.size();
     }
 
     @Override
-    protected Resume getElement(String uuid) {
-        return resumeMap.get(uuid);
+    protected Object getSearchKey(String uuid) {
+        return map.get(uuid);
     }
 
     @Override
-    protected boolean deleteElement(String uuid) {
-        return resumeMap.remove(uuid) != null;
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
     }
 
     @Override
-    protected Resume[] getResumesArray() {
-        return resumeMap.values().toArray(new Resume[resumeMap.size()]);
+    protected void doUpdate(Resume r, Object searchKey) {
+        map.replace(r.getUuid(), r);
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        map.put(r.getUuid(), r);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        map.remove(((Resume) searchKey).getUuid());
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return map.get(((Resume) searchKey).getUuid());
     }
 }
