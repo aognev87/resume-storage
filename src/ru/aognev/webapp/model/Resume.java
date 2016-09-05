@@ -1,5 +1,7 @@
 package ru.aognev.webapp.model;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,6 +14,10 @@ public class Resume implements Comparable<Resume> {
     private final String uuid;
 
     private final String fullName;
+
+    private final Map<String, String> contacts = new HashMap<>();
+
+    private final Map<SectionType, Section> sectionMap = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -30,6 +36,30 @@ public class Resume implements Comparable<Resume> {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Map<String, String> getAllContacts() {
+        return contacts;
+    }
+
+    public void addContact(String type, String contact) {
+        contacts.put(type, contact);
+    }
+
+    public String getContact(String type) {
+        return contacts.get(type);
+    }
+
+    public Map<SectionType, Section> getAllSections() {
+        return sectionMap;
+    }
+
+    public void addSection(SectionType type, Section section) {
+        sectionMap.put(type, section);
+    }
+
+    public void getSection(SectionType type) {
+        sectionMap.get(type);
     }
 
     @Override
