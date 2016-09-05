@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Created by aognev on 01.09.2016.
  */
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
 
     private Map<String, Resume> map = new HashMap<>();
 
@@ -20,8 +20,8 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        return AbstractStorage.getAllSorted(new ArrayList<>(map.values()));
+    protected List<Resume> doCopyAll() {
+        return new ArrayList<>(map.values());
     }
 
     @Override
@@ -35,27 +35,27 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(String searchKey) {
         return map.containsKey(searchKey);
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        map.replace((String) searchKey, r);
+    protected void doUpdate(Resume r, String searchKey) {
+        map.replace(searchKey, r);
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        map.put((String) searchKey, r);
+    protected void doSave(Resume r, String searchKey) {
+        map.put(searchKey, r);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
+    protected void doDelete(String searchKey) {
         map.remove(searchKey);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
+    protected Resume doGet(String searchKey) {
         return map.get(searchKey);
     }
 }

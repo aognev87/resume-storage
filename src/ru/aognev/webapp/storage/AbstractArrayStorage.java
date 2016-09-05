@@ -1,20 +1,15 @@
 package ru.aognev.webapp.storage;
 
-import com.sun.org.apache.regexp.internal.RE;
-import ru.aognev.webapp.exception.ExistStorageException;
-import ru.aognev.webapp.exception.NotExistStorageException;
 import ru.aognev.webapp.exception.StorageException;
 import ru.aognev.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by aognev on 26.08.2016.
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -30,41 +25,40 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume r, Object index) {
-        storage[(Integer) index] = r;
+    protected void doUpdate(Resume r, Integer index) {
+        storage[index] = r;
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> resumesList = new ArrayList<>(Arrays.asList(Arrays.copyOfRange(storage, 0, size)));
-        return AbstractStorage.getAllSorted(resumesList);
-    }
-
-    @Override
-    protected void doSave(Resume r, Object index) {
+    protected void doSave(Resume r, Integer index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            insertElement(r, (Integer) index);
+            insertElement(r,index);
             size++;
         }
     }
 
     @Override
-    protected void doDelete(Object index) {
-        fillDeletedElement((Integer) index);
+    protected void doDelete(Integer index) {
+        fillDeletedElement(index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected Resume doGet(Object index) {
-        return storage[(Integer) index];
+    protected Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index > -1;
+    protected boolean isExist(Integer index) {
+        return index > -1;
+    }
+
+    @Override
+    protected List<Resume> doCopyAll() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     protected abstract void fillDeletedElement(int index);

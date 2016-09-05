@@ -1,14 +1,9 @@
 package ru.aognev.webapp.storage;
 
 import org.junit.*;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 import ru.aognev.webapp.exception.ExistStorageException;
 import ru.aognev.webapp.exception.NotExistStorageException;
-import ru.aognev.webapp.exception.StorageException;
 import ru.aognev.webapp.model.Resume;
-
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,7 +11,7 @@ import java.util.List;
  */
 public abstract class AbstractStorageTest {
 
-    private Storage storage;
+    protected Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1 = new Resume(UUID_1, "FullName1");
@@ -37,9 +32,9 @@ public abstract class AbstractStorageTest {
     @Before
     public void setUp() {
         storage.clear();
-        storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
+        storage.save(RESUME_1);
     }
 
     @Test
@@ -107,16 +102,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() {
         storage.delete(UUID_4);
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveOverflow() throws Exception{
-
-        for (int i = 3; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-            storage.save(new Resume());
-        }
-
-        storage.save(RESUME_4);
     }
 
     private void assertSize(int size) {
