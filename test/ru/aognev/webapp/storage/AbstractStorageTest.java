@@ -3,8 +3,15 @@ package ru.aognev.webapp.storage;
 import org.junit.*;
 import ru.aognev.webapp.exception.ExistStorageException;
 import ru.aognev.webapp.exception.NotExistStorageException;
-import ru.aognev.webapp.model.Resume;
+import ru.aognev.webapp.model.*;
+import ru.aognev.webapp.util.DateUtil;
+
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+
+import static ru.aognev.webapp.storage.TestData.*;
+
 
 /**
  * Created by aognev on 31.08.2016.
@@ -12,18 +19,6 @@ import java.util.List;
 public abstract class AbstractStorageTest {
 
     protected Storage storage;
-
-    private static final String UUID_1 = "uuid1";
-    private static final Resume RESUME_1 = new Resume(UUID_1, "FullName1");
-
-    private static final String UUID_2 = "uuid2";
-    private static final Resume RESUME_2 = new Resume(UUID_2, "FullName2");
-
-    private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_3 = new Resume(UUID_3, "FullName3");
-
-    private static final String UUID_4 = "uuid4";
-    private static final Resume RESUME_4 = new Resume(UUID_4, "FullName4");
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;

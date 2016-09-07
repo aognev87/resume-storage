@@ -47,6 +47,10 @@ public class Resume implements Comparable<Resume> {
         return contacts.get(type);
     }
 
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
+    }
+
     public void getSection(SectionType type) {
         sections.get(type);
     }
