@@ -6,28 +6,21 @@ import java.util.*;
  * Created by aognev on 06.09.2016.
  */
 public class OrganizationSection extends Section {
-    //private final List<Organization> organizations;
+    private static final long serialVersionUID = 1L;
 
-    private final Map<Link, List<Organization>> organizationsMap = new HashMap<>();
+    private final List<Organization> organizations;
+
+    public OrganizationSection(Organization... organizations) {
+        this(Arrays.asList(organizations));
+    }
 
     public OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations, "Organizations must not be null");
-
-        for (Organization o : organizations) {
-            List<Organization> innerList = organizationsMap.get(o.getHomePage());
-
-            if (innerList != null) {
-                innerList.add(o);
-            } else {
-                innerList = new ArrayList<>();
-                innerList.add(o);
-                organizationsMap.put(o.getHomePage(), innerList);
-            }
-        }
+        this.organizations = organizations;
     }
 
-    public Map<Link, List<Organization>> getOrganizations() {
-        return organizationsMap;
+    public List<Organization> getOrganizations() {
+        return organizations;
     }
 
     @Override
@@ -37,17 +30,17 @@ public class OrganizationSection extends Section {
 
         OrganizationSection that = (OrganizationSection) o;
 
-        return organizationsMap.equals(that.organizationsMap);
+        return organizations.equals(that.organizations);
 
     }
 
     @Override
     public int hashCode() {
-        return organizationsMap.hashCode();
+        return organizations.hashCode();
     }
 
     @Override
     public String toString() {
-        return organizationsMap.toString();
+        return organizations.toString();
     }
 }

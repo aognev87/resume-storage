@@ -1,11 +1,13 @@
 package ru.aognev.webapp.model;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * com.urise.webapp.model.ru.aognev.webapp.model.Resume class
  */
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     // Unique identifier
     private final String uuid;

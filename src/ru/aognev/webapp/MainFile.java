@@ -1,49 +1,85 @@
 package ru.aognev.webapp;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by aognev on 07.09.2016.
  */
 public class MainFile {
     public static void main(String[] args) {
-        File file = new File(".");
+        File file = new File(".\\src");
 
-        List<String> fileList = getFileList(file);
-        for (String s : fileList) {
-            System.out.println(s);
-        }
-
-        List<String> filledFileList = new ArrayList<>();
-        fillFileList(filledFileList, file);
-
-        System.out.println(fileList.size() + ", " + filledFileList.size());
-        System.out.println(fileList.equals(filledFileList));
+        //printDirectoryDeeply(file);
+        printPrettyDirectoryDeeply(file);
     }
 
-    private static List<String> getFileList(File file) {
-        List<String> fileList = new ArrayList<>();
+    public static void printDirectoryDeeply(File file) {
+        File[] files = file.listFiles();
 
-        for (File f : file.listFiles()) {
-            if (f.isDirectory()) {
-                fileList.addAll(getFileList(f));
-            } else {
-                fileList.add(f.getPath());
-            }
-        }
-
-        return fileList;
-    }
-
-    private static void fillFileList(List<String> fileList,  File file) {
-        for (File f : file.listFiles()) {
-            if (f.isDirectory()) {
-                fillFileList(fileList, f);
-            } else {
-                fileList.add(f.getPath());
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    System.out.println("Directory:" + f.getPath());
+                    printDirectoryDeeply(f);
+                } else {
+                    System.out.println("File:" + f.getPath());
+                }
             }
         }
     }
+
+    public static void printPrettyDirectoryDeeply(File file) {
+        System.out.println(/*"Root:" + */file.getName());
+
+        File[] files = file.listFiles();
+
+        if (files != null) {
+            String prefix = file.getName().replaceAll(".", " ");
+            for (File f : files) {
+                //printPrettyDirectoryDeeply(f, 0);
+                printPrettyDirectoryDeeply(f, prefix);
+            }
+        }
+    }
+
+    private static void printPrettyDirectoryDeeply(File file, int level) {
+        for (int i = 0; i < level + 1; i++) {
+            System.out.print("\t");
+        }
+
+        if (file.isDirectory()) {
+            System.out.println(/*"Directory: " + */file.getName());
+            File[] files = file.listFiles();
+
+            if (files != null) {
+                for (File f : files) {
+                    printPrettyDirectoryDeeply(f, level + 1);
+                }
+            }
+        } else if (file.isFile()) {
+
+            System.out.println(/*"File: " + */file.getName());
+        }
+    }
+
+    private static void printPrettyDirectoryDeeply(File file, String prefix) {
+        System.out.print(prefix);
+
+        if (file.isDirectory()) {
+            System.out.println(file.getName());
+            File[] files = file.listFiles();
+
+            if (files != null) {
+                prefix += file.getName().replaceAll(".", " ");
+                for (File f : files) {
+                    printPrettyDirectoryDeeply(f, prefix);
+                }
+            }
+        } else if (file.isFile()) {
+
+            System.out.println(file.getName());
+        }
+    }
+
+
 }

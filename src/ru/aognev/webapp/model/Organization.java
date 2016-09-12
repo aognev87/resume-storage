@@ -1,88 +1,117 @@
 package ru.aognev.webapp.model;
 
+
+import ru.aognev.webapp.util.DateUtil;
+
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+
+import static ru.aognev.webapp.util.DateUtil.NOW;
 
 /**
  * Created by aognev on 06.09.2016.
  */
-public class Organization {
+public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private final Link homePage;
+    List<Position> positions = new ArrayList<>();
 
-    private final LocalDate startDate;
+    public Organization(String name, String url, Position... positions) {
+        this(new Link(name, url), Arrays.asList(positions));
+    }
 
-    private final LocalDate endDate;
-
-    private final String title;
-
-    private final String description;
-
-    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate, "Start date must not be null");
-        Objects.requireNonNull(endDate, "End date must not be null");
-        Objects.requireNonNull(title, "Title must not be null");
-
-        this.homePage = new Link(name, url);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
+    public Organization(Link homePage, List<Position> positions) {
+        this.homePage = homePage;
+        this.positions = positions;
     }
 
     public Link getHomePage() {
         return homePage;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Organization that = (Organization) o;
-
-        if (!homePage.equals(that.homePage)) return false;
-        if (!startDate.equals(that.startDate)) return false;
-        if (!endDate.equals(that.endDate)) return false;
-        if (!title.equals(that.title)) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = homePage.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
-    }
-
     @Override
     public String toString() {
-        return "Organization{" +
-                "homePage=" + homePage +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Organization{" + homePage + "," + positions + '}';
+    }
+
+    public static class Position implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final LocalDate startDate;
+
+        private final LocalDate endDate;
+
+        private final String title;
+
+        private final String description;
+
+        public Position(int startYear, Month startMonth, String title, String description) {
+            this(DateUtil.of(startYear, startMonth), NOW, title, description);
+        }
+
+        public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+            this(DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth), title, description);
+        }
+
+        public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
+            Objects.requireNonNull(startDate, "Start date must not be null");
+            Objects.requireNonNull(endDate, "End date must not be null");
+            Objects.requireNonNull(title, "Title must not be null");
+
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.title = title;
+            this.description = description;
+        }
+
+        public LocalDate getStartDate() {
+            return startDate;
+        }
+
+        public LocalDate getEndDate() {
+            return endDate;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Position position = (Position) o;
+
+            if (!startDate.equals(position.startDate)) return false;
+            if (!endDate.equals(position.endDate)) return false;
+            if (!title.equals(position.title)) return false;
+            return description != null ? description.equals(position.description) : position.description == null;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = startDate.hashCode();
+            result = 31 * result + endDate.hashCode();
+            result = 31 * result + title.hashCode();
+            result = 31 * result + (description != null ? description.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Position{" + startDate + "," + endDate + "," + title + "," + description + '}';
+        }
     }
 }

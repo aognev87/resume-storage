@@ -1,5 +1,6 @@
 package ru.aognev.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,7 +8,13 @@ import java.util.Objects;
  * Created by aognev on 06.09.2016.
  */
 public class ListSection extends Section {
+    private static final long serialVersionUID = 1L;
+
     private final List<String> items;
+
+    public ListSection(String... items) {
+        this(Arrays.asList(items));
+    }
 
     public ListSection(List<String> items) {
         Objects.requireNonNull(items, "Items must not be null");
