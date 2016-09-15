@@ -9,20 +9,20 @@ public class MainFile {
     public static void main(String[] args) {
         File file = new File(".\\src");
 
-        //printDirectoryDeeply(file);
-        printPrettyDirectoryDeeply(file);
+        printDirectoryDeeply(file, "");
+        //printPrettyDirectoryDeeply(file);
     }
 
-    public static void printDirectoryDeeply(File file) {
-        File[] files = file.listFiles();
+    public static void printDirectoryDeeply(File dir, String offset) {
+        File[] files = dir.listFiles();
 
         if (files != null) {
-            for (File f : files) {
-                if (f.isDirectory()) {
-                    System.out.println("Directory:" + f.getPath());
-                    printDirectoryDeeply(f);
-                } else {
-                    System.out.println("File:" + f.getPath());
+            for (File file : files) {
+                if (file.isFile()) {
+                    System.out.println(offset + "F: " + file.getName());
+                } else if (file.isDirectory()){
+                    System.out.println(offset + "D: " + file.getName());
+                    printDirectoryDeeply(file, offset + "  ");
                 }
             }
         }
