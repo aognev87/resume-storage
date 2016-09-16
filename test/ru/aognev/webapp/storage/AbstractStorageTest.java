@@ -30,10 +30,10 @@ public abstract class AbstractStorageTest {
     public static final Resume R4;
 
     static {
-        R1 = new Resume(UUID_1, "FullName1");
-        R2 = new Resume(UUID_2, "FullName1");
-        R3 = new Resume(UUID_3, "FullName1");
-        R4 = new Resume(UUID_4, "FullName1");
+        R1 = new Resume(UUID_1, "name1");
+        R2 = new Resume(UUID_2, "name2");
+        R3 = new Resume(UUID_3, "name3");
+        R4 = new Resume(UUID_4, "name4");
 
         R1.addContact(ContactType.MAIL, "mail@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
@@ -147,5 +147,4 @@ public abstract class AbstractStorageTest {
     private void assertGet(Resume r) {
         Assert.assertEquals(r, storage.get(r.getUuid()));
     }
-
 }

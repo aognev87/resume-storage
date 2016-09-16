@@ -8,7 +8,10 @@ import java.util.*;
 public class OrganizationSection extends Section {
     private static final long serialVersionUID = 1L;
 
-    private final List<Organization> organizations;
+    private List<Organization> organizations;
+
+    public OrganizationSection() {
+    }
 
     public OrganizationSection(Organization... organizations) {
         this(Arrays.asList(organizations));
@@ -27,16 +30,13 @@ public class OrganizationSection extends Section {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         OrganizationSection that = (OrganizationSection) o;
-
-        return organizations.equals(that.organizations);
-
+        return Objects.equals(organizations, that.organizations);
     }
 
     @Override
     public int hashCode() {
-        return organizations.hashCode();
+        return Objects.hash(organizations);
     }
 
     @Override
