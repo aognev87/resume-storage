@@ -1,6 +1,7 @@
 package ru.aognev.webapp.storage;
 
 import org.junit.*;
+import ru.aognev.webapp.Config;
 import ru.aognev.webapp.exception.ExistStorageException;
 import ru.aognev.webapp.exception.NotExistStorageException;
 import ru.aognev.webapp.model.*;
@@ -15,7 +16,8 @@ import java.util.List;
  */
 public abstract class AbstractStorageTest {
 
-    protected static final File STORAGE_DIR = new File (".\\file-storage");
+    //protected static final File STORAGE_DIR = new File (".\\file-storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir();
 
     protected Storage storage;
 
@@ -35,7 +37,7 @@ public abstract class AbstractStorageTest {
         R3 = new Resume(UUID_3, "name3");
         R4 = new Resume(UUID_4, "name4");
 
-        R1.addContact(ContactType.MAIL, "mail@ya.ru");
+        /*R1.addContact(ContactType.MAIL, "mail@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
         R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
         R1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
@@ -58,7 +60,7 @@ public abstract class AbstractStorageTest {
         R2.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization21", "http://Organization21.ru",
-                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));
+                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));*/
     }
 
     protected AbstractStorageTest(Storage storage) {
