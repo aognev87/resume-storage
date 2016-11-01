@@ -7,6 +7,6 @@ import ru.aognev.webapp.Config;
  */
 public class SqlStorageTest extends AbstractStorageTest {
     public SqlStorageTest() {
-        super(new SqlStorage(Config.get().getCreds()));
+        super(Config.get().getStorage());
     }
 }

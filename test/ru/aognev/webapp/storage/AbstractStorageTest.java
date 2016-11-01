@@ -9,6 +9,7 @@ import ru.aognev.webapp.model.*;
 import java.io.File;
 import java.time.Month;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -21,10 +22,10 @@ public abstract class AbstractStorageTest {
 
     protected Storage storage;
 
-    public static final String UUID_1 = "uuid1";
-    public static final String UUID_2 = "uuid2";
-    public static final String UUID_3 = "uuid3";
-    public static final String UUID_4 = "uuid4";
+    public static final String UUID_1 = UUID.randomUUID().toString();//"uuid1";
+    public static final String UUID_2 = UUID.randomUUID().toString();//"uuid2";
+    public static final String UUID_3 = UUID.randomUUID().toString();//"uuid3";
+    public static final String UUID_4 = UUID.randomUUID().toString();//"uuid4";
 
     public static final Resume R1;
     public static final Resume R2;
