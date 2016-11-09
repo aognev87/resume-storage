@@ -1,6 +1,6 @@
 DELETE FROM resume;
 DELETE FROM contact;
-DELETE FROM text_section;
+DELETE FROM section;
 
 INSERT INTO resume (uuid, full_name) VALUES
   ('9a88d05d-7586-4431-921d-2eb30a586760', 'name1'),
@@ -11,6 +11,6 @@ INSERT INTO contact (id, resume_uuid, type, value) VALUES
   ('1', '9a88d05d-7586-4431-921d-2eb30a586760', 'PHONE', '123456'),
   ('2', '9a88d05d-7586-4431-921d-2eb30a586760', 'SKYPE', 'skype');
 
-INSERT INTO text_section (id, resume_uuid, type, value) VALUES
-  ('1', '9a88d05d-7586-4431-921d-2eb30a586760', 'OBJECTIVE', 'objective1'),
-  ('2', '9a88d05d-7586-4431-921d-2eb30a586760', 'PERSONAL', 'Personal data');
+INSERT INTO section (id, resume_uuid, type, list, value) VALUES
+  ('1', '9a88d05d-7586-4431-921d-2eb30a586760', 'OBJECTIVE', 'false', 'objective1'),
+  ('2', '9a88d05d-7586-4431-921d-2eb30a586760', 'PERSONAL', 'false', 'Personal data');

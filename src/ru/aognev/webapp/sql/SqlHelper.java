@@ -30,14 +30,6 @@ public class SqlHelper{
         }
     }
     
-    public <T> T execute (Connection conn, String query, SqlStrategy<T> strategy) {
-        try (PreparedStatement ps = conn.prepareStatement(query)) {
-            return strategy.execute(ps);
-        } catch (SQLException e) {
-            throw ExceptionUtil.convertException(e);
-        }
-    }
-    
     public <T> T transactionalExecute (SqlTransaction<T> executor) {
         try (Connection conn = connectionFactory.getConnection()) {
             try {

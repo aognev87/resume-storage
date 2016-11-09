@@ -65,8 +65,8 @@ public class Resume implements Comparable<Resume>, Serializable {
         sections.put(type, section);
     }
 
-    public void getSection(SectionType type) {
-        sections.get(type);
+    public Section getSection(SectionType type) {
+        return sections.get(type);
     }
 
     @Override

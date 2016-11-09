@@ -9,7 +9,8 @@ import java.util.Properties;
  * Created by aognev on 21.10.2016.
  */
 public class Config {
-    private static final File PROPS = new File ("config\\resumes.properties");
+    //private static final File PROPS = new File ("config\\resumes.properties");
+    private static final File PROPS = new File ("D:\\Active Tasks\\Java\\Projects\\resume-storage\\config\\resumes.properties");
     private static final Config INSTANCE = new Config();
 
     private final File storageDir;

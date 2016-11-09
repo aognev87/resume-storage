@@ -42,11 +42,11 @@ public abstract class AbstractStorageTest {
 
         R1.addContact(ContactType.MAIL, "mail@ya.ru");
         R1.addContact(ContactType.PHONE, "11111");
-        /*R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
         R1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
         R1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievement11", "Achievement12", "Achievement13"));
         R1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
-        R1.addSection(SectionType.EXPERIENCE,
+        /*R1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Organization11", "http://Organization11.ru",
                             new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
@@ -98,6 +98,7 @@ public abstract class AbstractStorageTest {
         updated.addContact(ContactType.MAIL, "mail@google.com");
         updated.addContact(ContactType.SKYPE, "NewSkype");
         updated.addContact(ContactType.MOBILE, "+7 921 222-2222");
+        updated.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievement21", "Achievement22", "Achievement23"));
 
         storage.update(updated);
         assertGet(updated);
